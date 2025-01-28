@@ -16,7 +16,7 @@ try:
 
         country_counts = df_map.groupby('1st aff country: 1st author')['Submission Id'].count().reset_index()
         country_counts.rename(columns={
-            'Submission Id': '1st author base',
+            'Submission Id': '1st Author Base',
             'Submission Count': 'Total Abstracts Received'
         }, inplace=True)
         
@@ -24,9 +24,9 @@ try:
 
         fig = px.choropleth(
             country_counts,
-            locations='1st author base',
+            locations='1st Author Base',
             locationmode='country names',
-            color='No of abstracts received',
+            color='Total Abstracts Received',
             hover_name='This is where the institute of the primary author is located',
             color_continuous_scale='Viridis',
             title='Number of Abstract Submissions by Country'
