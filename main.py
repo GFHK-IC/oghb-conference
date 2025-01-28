@@ -15,16 +15,21 @@ try:
         df_map.dropna(subset=['1st aff country: 1st author'], inplace=True)
 
         country_counts = df_map.groupby('1st aff country: 1st author')['Submission Id'].count().reset_index()
-        country_counts.rename(columns={'Submission Id': 'Submission Count'}, inplace=True)
+        country_counts.rename(columns={
+            'Submission Id': '1st author's Base',
+            'Submission Count': 'Total Abstracts Received'
+        }, inplace=True)
+        
+        country_counts.sort_values(by='Total Abstracts Received', ascending=False, inplace=True)
 
         fig = px.choropleth(
             country_counts,
-            locations='1st aff country: 1st author',
+            locations='1st author's Base',
             locationmode='country names',
-            color='Submission Count',
-            hover_name='1st aff country: 1st author',
+            color='No of abstracts received',
+            hover_name='This is where the institute of the primary author is located',
             color_continuous_scale='Viridis',
-            title='Number of Submissions by Country'
+            title='Number of Abstract Submissions by Country'
         )
 
         st.title('2024 OGHB Conference Submission Dashboard')
@@ -33,6 +38,6 @@ try:
         st.subheader('Country-wise Submission Counts')
         st.dataframe(country_counts)
     else:
-        st.error("Necessary columns not found in the uploaded CSV.")
+        st.error("Col not found. Check col names on sheet")
 except Exception as e:
     st.error(f"Error loading data: {e}")
